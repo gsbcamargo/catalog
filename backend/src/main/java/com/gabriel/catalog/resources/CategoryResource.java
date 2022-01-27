@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gabriel.catalog.dtos.CategoryDto;
@@ -29,5 +30,10 @@ public class CategoryResource {
 	public ResponseEntity<CategoryDto> findById(@PathVariable(value = "id") Long id) {
 		CategoryDto dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public void deleteById(@PathVariable(value = "id") Long id) {
+		service.deleteById(id);
 	}
 }

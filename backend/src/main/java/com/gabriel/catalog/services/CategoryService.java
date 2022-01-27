@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gabriel.catalog.dtos.CategoryDto;
 import com.gabriel.catalog.entities.Category;
 import com.gabriel.catalog.repositories.CategoryRepository;
+import com.gabriel.catalog.services.exceptions.EntityNotFoundException;
 
 @Service
 public class CategoryService {
@@ -28,7 +29,14 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryDto findById(Long id) {
 		Optional<Category> categoryOptional = repository.findById(id);
-		Category category = categoryOptional.get();
+		Category category = categoryOptional
+				.orElseThrow(() -> new EntityNotFoundException(String.format("Sorry, entity of id %s not found.", id)));
 		return new CategoryDto(category);
 	}
+	
+	@Transactional(readOnly = false)
+	public void deleteById(Long id) {
+		repository.deleteById(id);
+	}
+
 }
