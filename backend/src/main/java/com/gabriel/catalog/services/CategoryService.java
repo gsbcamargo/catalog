@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gabriel.catalog.dtos.CategoryDto;
 import com.gabriel.catalog.entities.Category;
 import com.gabriel.catalog.repositories.CategoryRepository;
+import com.gabriel.catalog.services.exceptions.DatabaseException;
 import com.gabriel.catalog.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -24,7 +27,6 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public List<CategoryDto> findAll() {
 		List<Category> list = repository.findAll();
-
 		return list.stream().map(x -> new CategoryDto(x)).collect(Collectors.toList());
 	}
 
@@ -41,26 +43,31 @@ public class CategoryService {
 		Category entity = new Category();
 		entity.setName(dto.getName());
 		entity = repository.save(entity);
-		
 		return new CategoryDto(entity);
 	}
 	
-	@Transactional(readOnly = false)
 	public void deleteById(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} 
+		catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(String.format("Sorry, entity of id %s not found.", id));
+		}
 	}
 
 	@Transactional
 	public CategoryDto update(Long id, CategoryDto dto) {
-		
 		try {
 			Category entity = repository.getById(id);
 			entity.setName(dto.getName());
 			entity = repository.save(entity);
-			
 			return new CategoryDto(entity);
-		} catch(EntityNotFoundException e) {
+		} 
+		catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(String.format("Sorry, entity of id %s not found.", id));
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Integrity violation.");
 		}
 	}
 }
