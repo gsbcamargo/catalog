@@ -1,4 +1,4 @@
-INSERT INTO tb_category (name) VALUES ('Foo');
-INSERT INTO tb_category (name) VALUES ('Bar');
-INSERT INTO tb_category (name) VALUES ('Zar');
-INSERT INTO tb_category (name) VALUES ('Far');
+INSERT INTO tb_category (name, created_At) VALUES ('Foo', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Bar', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Zar', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Far', NOW());
