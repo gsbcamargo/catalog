@@ -34,9 +34,19 @@ public class CategoryService {
 		return new CategoryDto(category);
 	}
 	
+	@Transactional(readOnly = true)
+	public CategoryDto insert(CategoryDto dto) {
+		Category entity = new Category();
+		entity.setName(dto.getName());
+		entity = repository.save(entity);
+		
+		return new CategoryDto(entity);
+	}
+	
 	@Transactional(readOnly = false)
 	public void deleteById(Long id) {
 		repository.deleteById(id);
 	}
+
 
 }
