@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,12 +28,14 @@ public class CategoryResource {
 	@GetMapping
 	public ResponseEntity<List<CategoryDto>> findAll() {
 		List<CategoryDto> list = service.findAll();
+		
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<CategoryDto> findById(@PathVariable(value = "id") Long id) {
 		CategoryDto dto = service.findById(id);
+		
 		return ResponseEntity.ok().body(dto);
 	}
 	
@@ -49,5 +51,12 @@ public class CategoryResource {
 	@DeleteMapping(value = "/{id}")
 	public void deleteById(@PathVariable(value = "id") Long id) {
 		service.deleteById(id);
+	}
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<CategoryDto> update(@PathVariable(value = "id") Long id, @RequestBody CategoryDto dto) {
+		dto = service.update(id, dto);
+		
+		return ResponseEntity.ok().body(dto);
 	}
 }
