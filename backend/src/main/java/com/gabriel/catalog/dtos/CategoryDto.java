@@ -62,5 +62,4 @@ public class CategoryDto implements Serializable {
 	public void setUpdatedAt(Instant updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
 }
