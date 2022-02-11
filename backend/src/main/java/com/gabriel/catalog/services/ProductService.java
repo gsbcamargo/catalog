@@ -26,7 +26,7 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
 
@@ -38,12 +38,12 @@ public class ProductService {
 
 	@Transactional(readOnly = true)
 	public ProductDto findById(Long id) {
-		Optional<Product> categoryOptional = productRepository.findById(id);
-		Product category = categoryOptional
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Sorry, entity of id %s not found.", id)));
-		return new ProductDto(category, category.getCategories());
+		Optional<Product> productOptional = productRepository.findById(id);
+		Product product = productOptional.orElseThrow(
+				() -> new ResourceNotFoundException(String.format("Sorry, entity of id %s not found.", id)));
+		return new ProductDto(product);
 	}
-	
+
 	@Transactional
 	public ProductDto insert(ProductDto dto) {
 		Product entity = new Product();
@@ -51,13 +51,11 @@ public class ProductService {
 		entity = productRepository.save(entity);
 		return new ProductDto(entity);
 	}
-	
 
 	public void deleteById(Long id) {
 		try {
 			productRepository.deleteById(id);
-		} 
-		catch (EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(String.format("Sorry, entity of id %s not found.", id));
 		}
 	}
@@ -69,22 +67,20 @@ public class ProductService {
 			toDto(dto, entity);
 			entity = productRepository.save(entity);
 			return new ProductDto(entity);
-		} 
-		catch (EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(String.format("Sorry, entity of id %s not found.", id));
-		}
-		catch (DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation.");
 		}
 	}
-	
+
 	private void toDto(ProductDto dto, Product entity) {
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setPrice(dto.getPrice());
 		entity.setImgUrl(dto.getImgUrl());
 		entity.setDate(dto.getDate());
-		
+
 		entity.getCategories().clear();
 		for (CategoryDto catDto : dto.getCategories()) {
 			Category category = categoryRepository.getById(catDto.getId());
