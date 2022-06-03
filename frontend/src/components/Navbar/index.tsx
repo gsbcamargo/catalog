@@ -1,7 +1,7 @@
 function Navbar() {
   return (
     <>
-      <nav className="bg-dark">
+      <nav className="bg-secondary">
         <div>
           <a href="link">
             <h4>Catalog</h4>
