@@ -1,21 +1,23 @@
+import './style.css';
+
 function Navbar() {
   return (
     <>
-      <nav className="bg-secondary">
-        <div>
-          <a href="link">
+      <nav className='navbar navbar-expand-md bg-secondary main-navbar'>
+        <div className='container-fluid'>
+          <a href='link' className='navbar-logo-title'>
             <h4>Catalog</h4>
           </a>
-          <div>
-            <ul>
+          <div className='collapse navbar-collapse'>
+            <ul className='navbar-nav offset-md-2 main-menu'>
               <li>
-                <a href="link">HOME</a>
+                <a href='link' className='active'>HOME</a>
               </li>
               <li>
-                <a href="link">CATÁLOGO</a>
+                <a href='link'>CATÁLOGO</a>
               </li>
               <li>
-                <a href="link">ADMIN</a>
+                <a href='link'>ADMIN</a>
               </li>
             </ul>
           </div>
