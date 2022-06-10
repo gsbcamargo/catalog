@@ -26,6 +26,6 @@
 }
 
 .main-navbar {
-    height: 80px;
+    min-height: 80px;
     padding-left: 20px;
 }
