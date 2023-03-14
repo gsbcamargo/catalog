@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.3</version>
+		<version>2.7.9</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gabriel</groupId>
@@ -15,7 +15,7 @@
 	<name>catalog</name>
 	<description>A simple catalog as a CRUD project</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>16</java.version>
 	</properties>
 
 	<dependencies>
@@ -45,12 +45,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
