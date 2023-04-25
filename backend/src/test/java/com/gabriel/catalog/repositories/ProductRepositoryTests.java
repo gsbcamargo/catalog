@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.gabriel.catalog.entities.Product;
+import com.gabriel.catalog.tests.Factory;
 
 @DataJpaTest // integration test
 public class ProductRepositoryTests {
@@ -20,12 +21,14 @@ public class ProductRepositoryTests {
 
 	private long existingId;
 	private long absentId;
+	private int countTotalProducts;
 
 	@BeforeEach // learning, didn't really need to put it here as code repetition is not an
 				// issue
 	public void setUp() throws Exception {
 		existingId = 1L;
 		absentId = 9999999L;
+		countTotalProducts = 25; // there are 25 products already seeded into db
 	}
 
 	@Test
@@ -55,5 +58,19 @@ public class ProductRepositoryTests {
 		Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
 			repository.deleteById(absentId);
 		});
+	}
+
+	@Test
+	public void insert_shouldPersistWithAutoincrementWhenIdIsNull() {
+
+		Product product = Factory.createProduct();
+		product.setId(null);
+
+		product = repository.save(product);
+		countTotalProducts += 1;
+
+		Assertions.assertNotNull(product.getId());
+		Assertions.assertEquals(countTotalProducts, product.getId());
+
 	}
 }
