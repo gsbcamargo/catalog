@@ -36,7 +36,6 @@ public class ProductDto implements Serializable {
 	}
 
 	public ProductDto(Product entity) {
-		super();
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.description = entity.getDescription();
@@ -47,7 +46,7 @@ public class ProductDto implements Serializable {
 	
 	public ProductDto(Product entity, Set<Category> categories) {
 		this(entity);
-		categories.forEach(cat -> this.categories.add(new CategoryDto(cat)));
+		categories.forEach(category -> this.categories.add(new CategoryDto(category)));
 	}
 
 	public Long getId() {
