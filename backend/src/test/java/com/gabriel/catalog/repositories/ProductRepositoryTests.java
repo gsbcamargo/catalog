@@ -24,7 +24,7 @@ public class ProductRepositoryTests {
 	private int countTotalProducts;
 
 	@BeforeEach // learning, didn't really need to put it here as code repetition is not an
-				// issue
+				// issue yet
 	public void setUp() throws Exception {
 		existingId = 1L;
 		absentId = 9999999L;
@@ -72,5 +72,19 @@ public class ProductRepositoryTests {
 		Assertions.assertNotNull(product.getId());
 		Assertions.assertEquals(countTotalProducts, product.getId());
 
+	}
+
+	@Test
+	public void findById_shouldReturnNonEmptyOptionalOfProductWhenIdIsPresent() {
+		Optional<Product> result = repository.findById(existingId);
+
+		Assertions.assertTrue(result.isPresent());
+	}
+
+	@Test
+	public void findById_shouldReturnEmptyOptionalOfProductWhenIdIsAbsent() {
+		Optional<Product> result = repository.findById(absentId);
+
+		Assertions.assertTrue(result.isEmpty());
 	}
 }
