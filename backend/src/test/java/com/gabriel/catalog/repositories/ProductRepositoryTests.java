@@ -17,17 +17,17 @@ import com.gabriel.catalog.tests.Factory;
 public class ProductRepositoryTests {
 
 	@Autowired
-	private ProductRepository repository;
+	private ProductRepository productRepository;
 
 	private long existingId;
-	private long absentId;
+	private long inexistentId;
 	private int countTotalProducts;
 
 	@BeforeEach // learning, didn't really need to put it here as code repetition is not an
 				// issue yet
 	public void setUp() throws Exception {
 		existingId = 1L;
-		absentId = 9999999L;
+		inexistentId = 9999999L;
 		countTotalProducts = 25; // there are 25 products already seeded into db
 	}
 
@@ -37,9 +37,9 @@ public class ProductRepositoryTests {
 
 		long startTime = System.nanoTime();
 
-		repository.deleteById(existingId);
+		productRepository.deleteById(existingId);
 
-		Optional<Product> result = repository.findById(existingId);
+		Optional<Product> result = productRepository.findById(existingId);
 
 		Assertions.assertFalse(result.isPresent());
 
@@ -56,7 +56,7 @@ public class ProductRepositoryTests {
 			throws EmptyResultDataAccessException {
 
 		Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
-			repository.deleteById(absentId);
+			productRepository.deleteById(inexistentId);
 		});
 	}
 
@@ -66,7 +66,7 @@ public class ProductRepositoryTests {
 		Product product = Factory.createProduct();
 		product.setId(null);
 
-		product = repository.save(product);
+		product = productRepository.save(product);
 		countTotalProducts += 1;
 
 		Assertions.assertNotNull(product.getId());
@@ -76,14 +76,14 @@ public class ProductRepositoryTests {
 
 	@Test
 	public void findById_shouldReturnNonEmptyOptionalOfProductWhenIdIsPresent() {
-		Optional<Product> result = repository.findById(existingId);
+		Optional<Product> result = productRepository.findById(existingId);
 
 		Assertions.assertTrue(result.isPresent());
 	}
 
 	@Test
 	public void findById_shouldReturnEmptyOptionalOfProductWhenIdIsAbsent() {
-		Optional<Product> result = repository.findById(absentId);
+		Optional<Product> result = productRepository.findById(inexistentId);
 
 		Assertions.assertTrue(result.isEmpty());
 	}
